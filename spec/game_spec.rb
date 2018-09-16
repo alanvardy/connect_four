@@ -15,10 +15,12 @@ describe Game do
 
   describe '#start' do
     it 'calls add_players' do
+      allow(game).to receive(:game_loop)
       expect(game).to receive(:add_players)
       game.start
     end
     it 'calls game_loop' do
+      allow(game).to receive(:add_players)
       expect(game).to receive(:game_loop)
       game.start
     end
@@ -33,13 +35,34 @@ describe Game do
 
   describe '#add_player' do
     it 'creates a player' do
-      pending 'need to fix this'
-      # expect(STDIN).to receive(:gets).and_return('yes')
-      # expect(game.players[0].name).to eq("Test")
+      allow(game).to receive(:get_input).and_return('test')
+      game.add_player(1)
+      expect(game.players.length).to eq(1)
     end
   end
 
   describe '#game_loop' do
+    pending 'todo'
+  end
+
+  describe '#won?' do
+    context 'when 4 in a row' do
+      it 'returns true' do
+        allow(game).to receive(:four_in_a_row?).and_return(true)
+        expect(game.won?).to be(true)
+        game.won?
+      end
+    end
+    context 'when not 4 in a row' do
+      it 'returns false' do
+        allow(game).to receive(:four_in_a_row?).and_return(false)
+        expect(game.won?).to be(false)
+        game.won?
+      end
+    end
+  end
+
+  describe '#four_in_a_row' do
     pending 'todo'
   end
 end

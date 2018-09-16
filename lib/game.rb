@@ -22,14 +22,30 @@ class Game
   end
 
   def add_player(num)
-    print "Player #{num}, Enter name: "
-    name = gets.chomp
-    print "Player #{num}, Enter symbol: "
-    symbol = gets.chomp
+    name = get_input("Player #{num}, Enter name: ")
+    symbol = get_input("Player #{num}, Enter symbol: ")
     @players << Player.new(name, symbol)
   end
 
+  def get_input(prompt, int = false)
+    print prompt
+    input = gets.chomp
+    return int ? input.to_int : input
+  end
+
   def game_loop
+
+  end
+
+  def won?
+    if four_in_a_row?
+      return true
+    else
+      return false
+    end
+  end
+
+  def four_in_a_row?
 
   end
 end
