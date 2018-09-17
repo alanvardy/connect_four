@@ -2,19 +2,19 @@ class Game
   attr_reader :players, :board
   def initialize
     @players = []
-    @board = [[00,01,02,03,04,05],
-              [10,11,12,13,14,15],
-              [20,21,22,23,24,25],
-              [30,31,32,33,34,35],
-              [40,41,42,43,44,45],
-              [50,51,52,53,54,55],
-              [60,61,62,63,64,65]]
+    @board = [[0,0,0,0,0,0,0],
+              [0,0,0,0,0,0,0],
+              [0,0,0,0,0,0,0],
+              [0,0,0,0,0,0,0],
+              [0,0,0,0,0,0,0],
+              [0,0,0,0,0,0,0]]
   end
 
   def start
     puts "Welcome to Connect Four!"
     add_players
     game_loop
+    game_end
   end
 
   def add_players
@@ -34,7 +34,10 @@ class Game
   end
 
   def game_loop
-
+    return if won?
+    display_board
+    select_column
+    change_player
   end
 
   def won?
@@ -45,7 +48,33 @@ class Game
     end
   end
 
+  def display_board
+    puts "\n"
+    @board.each do |row|
+      print "|"
+      row.each {|slot| print " #{slot} "}
+      puts "|"
+    end
+    puts "-" * 23
+    7.times do |num|
+      print "  #{num + 1}"
+    end
+    puts "\n"
+  end
+
   def four_in_a_row?
+
+  end
+
+  def game_end
+
+  end
+
+  def select_column
+
+  end
+
+  def change_player
 
   end
 end

@@ -15,13 +15,21 @@ describe Game do
 
   describe '#start' do
     it 'calls add_players' do
+      allow(game).to receive(:game_end)
       allow(game).to receive(:game_loop)
       expect(game).to receive(:add_players)
       game.start
     end
     it 'calls game_loop' do
+      allow(game).to receive(:game_end)
       allow(game).to receive(:add_players)
       expect(game).to receive(:game_loop)
+      game.start
+    end
+    it 'calls game_end' do
+      expect(game).to receive(:game_end)
+      allow(game).to receive(:add_players)
+      allow(game).to receive(:game_loop)
       game.start
     end
   end
@@ -42,7 +50,37 @@ describe Game do
   end
 
   describe '#game_loop' do
-    pending 'todo'
+    context 'when game is won' do
+      it 'goes to the game_end method' do
+        allow(game).to receive(:add_players)
+        allow(game).to receive(:won?).and_return(true)
+        expect(game).to receive(:game_end)
+        game.start
+      end
+    end
+    context 'when game isn\'t won' do
+      it 'displays the board' do
+        allow(game).to receive(:won?).and_return(false)
+        allow(game).to receive(:select_column)
+        allow(game).to receive(:change_player)
+        expect(game).to receive(:display_board)
+        game.game_loop
+      end
+      it 'asks to select the column' do
+        allow(game).to receive(:won?).and_return(false)
+        allow(game).to receive(:display_board)
+        allow(game).to receive(:change_player)
+        expect(game).to receive(:select_column)
+        game.game_loop
+      end
+      it 'changes the player' do
+        allow(game).to receive(:won?).and_return(false)
+        allow(game).to receive(:display_board)
+        allow(game).to receive(:select_column)
+        expect(game).to receive(:change_player)
+        game.game_loop
+      end
+    end
   end
 
   describe '#won?' do
@@ -62,7 +100,23 @@ describe Game do
     end
   end
 
+  describe '#display_board' do
+    #unable to test visual output
+  end
+
   describe '#four_in_a_row' do
+    pending 'todo'
+  end
+
+  describe '#game_end' do
+    pending 'todo'
+  end
+
+  describe '#select_column' do
+    pending 'todo'
+  end
+
+  describe '#change_player' do
     pending 'todo'
   end
 end
