@@ -43,32 +43,41 @@ describe Game do
   describe '#game_loop' do
     context 'when game is won' do
       it 'goes to the game_end method' do
-        allow(game).to receive(:add_players)
+        allow(game).to receive(:change_player)
+        allow(game).to receive(:display_board)
+        allow(game).to receive(:select_column)
         allow(game).to receive(:won?).and_return(true)
-        expect(game).to receive(:game_end)
-        game.start
+        expect(game).to receive(:game_loop).once
+        game.game_loop
       end
     end
     context 'when game isn\'t won' do
-      it 'displays the board' do
-        allow(game).to receive(:won?).and_return(false)
+      it 'loops again' do
+        allow(game).to receive(:change_player)
+        allow(game).to receive(:display_board)
         allow(game).to receive(:select_column)
+        expect(game).to receive(:won?).exactly(3).times.and_return(false, false, true)
+        game.game_loop
+      end
+      it 'sets the player' do
+        expect(game).to receive(:change_player)
+        allow(game).to receive(:display_board)
+        allow(game).to receive(:select_column)
+        allow(game).to receive(:won?).and_return(true)
+        game.game_loop
+      end
+      it 'displays the board' do
         allow(game).to receive(:change_player)
         expect(game).to receive(:display_board)
-        game.game_loop
-      end
-      it 'asks to select the column' do
-        allow(game).to receive(:won?).and_return(false)
-        allow(game).to receive(:display_board)
-        allow(game).to receive(:change_player)
-        expect(game).to receive(:select_column)
-        game.game_loop
-      end
-      it 'changes the player' do
-        allow(game).to receive(:won?).and_return(false)
-        allow(game).to receive(:display_board)
         allow(game).to receive(:select_column)
-        expect(game).to receive(:change_player)
+        allow(game).to receive(:won?).and_return(true)
+        game.game_loop
+      end
+      it 'asks player to set the column' do
+        allow(game).to receive(:change_player)
+        allow(game).to receive(:display_board)
+        expect(game).to receive(:select_column)
+        allow(game).to receive(:won?).and_return(true)
         game.game_loop
       end
     end
@@ -166,11 +175,25 @@ describe Game do
     pending 'todo'
   end
 
+  describe '#valid_column?' do
+    pending 'todo'
+  end
+
+  describe '#drop_token' do
+    context 'when a column is entered' do
+      it 'drops a token in that column' do
+        game.instance_variable_set(:@player_number, 2)
+        game.drop_token(2)
+        expect(game.board[game.board.length - 1][2]).to eq(2)
+      end
+    end
+  end
+
   describe '#change_player' do
     context 'when current player is 0' do
       it 'sets current player to 1' do
         game.instance_variable_set(:@players, ["Person1", "Person2"])
-        game.instance_variable_set(:@current_player, "Person1")
+        game.instance_variable_set(:@player_number, 1)
         game.change_player
         expect(game.current_player).to eq("Person2")
       end
@@ -178,7 +201,7 @@ describe Game do
     context 'when current player is 1' do
       it 'sets current player to 0' do
         game.instance_variable_set(:@players, ["Person1", "Person2"])
-        game.instance_variable_set(:@current_player, "Person2")
+        game.instance_variable_set(:@player_number, 2)
         game.change_player
         expect(game.current_player).to eq("Person1")
       end

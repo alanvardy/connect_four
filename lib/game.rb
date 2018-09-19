@@ -4,6 +4,7 @@ class Game
     @players = []
     @winning_player = nil
     @current_player = nil
+    @player_number = nil
     @board = [[0,0,0,0,0,0,0],
               [0,0,0,0,0,0,0],
               [0,0,0,0,0,0,0],
@@ -27,14 +28,14 @@ class Game
   def get_input(prompt, int = false)
     print prompt
     input = gets.chomp
-    return int ? input.to_int : input
+    return int ? input.to_i : input
   end
 
   def game_loop
-    return if won?
-    change_player
-    display_board
-    select_column
+      change_player
+      display_board
+      select_column
+      game_loop unless won?
   end
 
   def won?
@@ -46,7 +47,7 @@ class Game
   end
 
   def display_board
-    puts "\n"
+    puts "\n\n"
     @board.each do |row|
       print "|"
       row.each {|slot| print " #{slot} "}
@@ -56,7 +57,7 @@ class Game
     7.times do |num|
       print "  #{num + 1}"
     end
-    puts "\n"
+    puts "\n\n"
   end
 
   def four_in_a_row?
@@ -72,8 +73,8 @@ class Game
   def horizontal_lines
     result = []
     @board.each do |row|
-      row.map! {|x| x.to_s}
-      result << row.join("")
+      new_row = row.map {|x| x.to_s}
+      result << new_row.join("")
     end
     result
   end
@@ -114,33 +115,47 @@ class Game
   end
 
   def game_end
-
+    display_board
+    puts "GAME WON!"
   end
 
   def select_column
     loop do
-      column = get_input("Pick a column for your token #{@players[@current_player]}: ", true) - 1
+      column = get_input("Pick a column for your token #{@current_player}: ", true)
+      column -= 1
       if valid_column?(column)
         drop_token(column)
-        return
+        break
       end
       puts "Bad input"
     end
+    puts "FULFILLED"
   end
 
   def valid_column?(column)
-
+    true
+    # if @board[0][column] == 0
+    #   puts "The selected column is full! It is now the other players turn"
+    #   return false
+    # end
   end
 
-  def drop_token(column)
-
+  def drop_token(column, row = board.length-1)
+    if @board[row][column] == 0
+      @board[row][column] = @player_number
+      return
+    else
+      drop_token(column, row - 1)
+    end
   end
 
   def change_player
-    if @current_player == @players[0]
+    if @player_number == 1
       @current_player = @players[1]
+      @player_number = 2
     else
       @current_player = @players[0]
+      @player_number = 1
     end
   end
 end
