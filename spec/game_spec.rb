@@ -4,6 +4,7 @@ describe Game do
     allow($stdout).to receive(:write)
   end
   let(:game) {game ||= Game.new}
+
   context 'when initialized' do
     it 'creates the board' do
       expect(game.board).to be_truthy
@@ -95,15 +96,15 @@ describe Game do
   end
 
   describe '#four_in_a_row?' do
-    context 'when player 1 has 4 in a row' do
+    context 'when player 0 has 4 in a row' do
       it 'returns true' do
         allow(game).to receive(:horizontal_lines).and_return(["0111100", "0000000"])
         expect(game.four_in_a_row?).to be(true)
       end
-      it 'sets winning_player to 1' do
+      it 'sets winning_player to 0' do
         allow(game).to receive(:horizontal_lines).and_return(["0111100", "0000000"])
         game.four_in_a_row?
-        expect(game.winning_player).to eq(1)
+        expect(game.winning_player).to eq(0)
       end
     end
 
@@ -143,7 +144,7 @@ describe Game do
       end
       it 'sets player 1 as winner' do
         game.scan(["00000","00222","00011110"])
-        expect(game.winning_player).to eq(1)
+        expect(game.winning_player).to eq(0)
       end
     end
     context 'when given an array of strings with 4 twos within' do
@@ -152,7 +153,7 @@ describe Game do
       end
       it 'sets player 2 as winner' do
         game.scan(["00000","00111","00022220"])
-        expect(game.winning_player).to eq(2)
+        expect(game.winning_player).to eq(1)
       end
     end
   end
@@ -166,6 +167,21 @@ describe Game do
   end
 
   describe '#change_player' do
-    pending 'todo'
+    context 'when current player is 0' do
+      it 'sets current player to 1' do
+        game.instance_variable_set(:@players, ["Person1", "Person2"])
+        game.instance_variable_set(:@current_player, "Person1")
+        game.change_player
+        expect(game.current_player).to eq("Person2")
+      end
+    end
+    context 'when current player is 1' do
+      it 'sets current player to 0' do
+        game.instance_variable_set(:@players, ["Person1", "Person2"])
+        game.instance_variable_set(:@current_player, "Person2")
+        game.change_player
+        expect(game.current_player).to eq("Person1")
+      end
+    end
   end
 end

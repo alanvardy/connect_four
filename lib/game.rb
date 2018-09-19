@@ -1,9 +1,9 @@
 class Game
-  attr_reader :board, :winning_player, :players
+  attr_reader :board, :winning_player, :players, :current_player
   def initialize
     @players = []
-    @current_player = 0
     @winning_player = nil
+    @current_player = nil
     @board = [[0,0,0,0,0,0,0],
               [0,0,0,0,0,0,0],
               [0,0,0,0,0,0,0],
@@ -32,9 +32,9 @@ class Game
 
   def game_loop
     return if won?
+    change_player
     display_board
     select_column
-    change_player
   end
 
   def won?
@@ -103,10 +103,10 @@ class Game
   def scan(permutations)
     permutations.each do |string|
       if /1{4}/ =~ string
-        @winning_player = 1
+        @winning_player = 0
         return true
       elsif /2{4}/ =~ string
-        @winning_player = 2
+        @winning_player = 1
         return true
       end
     end
@@ -119,7 +119,7 @@ class Game
 
   def select_column
     loop do
-      column = get_input("Pick a column for your token #{@player1}: ", true) - 1
+      column = get_input("Pick a column for your token #{@players[@current_player]}: ", true) - 1
       if valid_column?(column)
         drop_token(column)
         return
@@ -137,6 +137,10 @@ class Game
   end
 
   def change_player
-
+    if @current_player == @players[0]
+      @current_player = @players[1]
+    else
+      @current_player = @players[0]
+    end
   end
 end
