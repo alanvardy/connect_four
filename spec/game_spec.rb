@@ -104,8 +104,24 @@ describe Game do
     #unable to test visual output
   end
 
-  describe '#four_in_a_row' do
-    pending 'todo'
+  describe '#four_in_a_row?' do
+    context 'when player 1 has 4 in a row' do
+      it 'returns true' do
+        allow(game).to receive(:horizontal_lines).and_return(["0111100", "0000000"])
+        expect(game.four_in_a_row?).to be(true)
+      end
+      it 'sets winning_player to 1' do
+        allow(game).to receive(:horizontal_lines).and_return(["0111100", "0000000"])
+        game.four_in_a_row?
+        expect(game.winning_player).to eq(1)
+      end
+    end
+
+    context 'when not 4 in a row' do
+      it 'returns false' do
+        expect(game.four_in_a_row?).to be(false)
+      end
+    end
   end
 
   describe '#horizontal_lines' do

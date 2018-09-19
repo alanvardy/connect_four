@@ -1,5 +1,5 @@
 class Game
-  attr_reader :players, :board
+  attr_reader :players, :board, :winning_player
   def initialize
     @players = []
     @winning_player = nil
@@ -67,8 +67,8 @@ class Game
     permutations = []
     permutations.push(*horizontal_lines)
     permutations.push(*vertical_lines)
-    permutations.push(*right_incline_lines)
-    permutations.push(*left_incline_lines)
+    # permutations.push(*right_incline_lines)
+    # permutations.push(*left_incline_lines)
 
     scan(permutations)
   end
@@ -76,6 +76,7 @@ class Game
   def horizontal_lines
     result = []
     @board.each do |row|
+      row.map! {|x| x.to_s}
       result << row.join("")
     end
     return result
@@ -87,7 +88,7 @@ class Game
     while counter < board[0].length
       column = ""
       @board.each do |row|
-        column += row[counter]
+        column += row[counter].to_s
       end
       result << column
       counter += 1
@@ -103,8 +104,18 @@ class Game
 
   end
 
-  def scan
-
+  def scan(permutations)
+    permutations.each do |string|
+      puts string
+      if /1{4}/ =~ string
+        @winning_player = 1
+        return true
+      elsif /2{4}/ =~ string
+        @winning_player = 2
+        return true
+      end
+      return false
+    end
   end
 
   def game_end
