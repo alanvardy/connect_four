@@ -32,17 +32,10 @@ describe Game do
   end
 
   describe '#add_players' do
-    it 'calls add_player twice' do
-      expect(game).to receive(:add_player).twice
-      game.add_players
-    end
-  end
-
-  describe '#add_player' do
     it 'creates a player' do
       allow(game).to receive(:get_input).and_return('test')
-      game.add_player(1)
-      expect(game.player1).to eq('test')
+      game.add_players
+      expect(game.players).to eq(['test', 'test'])
     end
   end
 

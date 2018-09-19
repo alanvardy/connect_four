@@ -1,8 +1,8 @@
 class Game
-  attr_reader :board, :winning_player, :player1, :player2
+  attr_reader :board, :winning_player, :players
   def initialize
-    @player1 = nil
-    @player2 = nil
+    @players = []
+    @current_player = 0
     @winning_player = nil
     @board = [[0,0,0,0,0,0,0],
               [0,0,0,0,0,0,0],
@@ -20,16 +20,8 @@ class Game
   end
 
   def add_players
-    2.times {|num| add_player(num)}
-  end
-
-  def add_player(num)
-    name = get_input("Player #{num}, Enter name: ")
-    if num == 1
-      @player1 = name
-    elsif num == 2
-      @player2 = name
-    end
+    @players << get_input("Player 1, Enter name: ")
+    @players << get_input("Player 2, Enter name: ")
   end
 
   def get_input(prompt, int = false)
@@ -127,7 +119,7 @@ class Game
 
   def select_column
     loop do
-      column = get_input("Pick a column for your token: ", true) - 1
+      column = get_input("Pick a column for your token #{@player1}: ", true) - 1
       if valid_column?(column)
         drop_token(column)
         return
