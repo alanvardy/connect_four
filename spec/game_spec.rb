@@ -108,6 +108,26 @@ describe Game do
     pending 'todo'
   end
 
+  describe '#horizontal_lines' do
+    pending 'todo'
+  end
+
+  describe '#vertical_lines' do
+    pending 'todo'
+  end
+
+  describe '#right_incline_lines' do
+    pending 'todo'
+  end
+
+  describe '#left_incline_lines' do
+    pending 'todo'
+  end
+
+  describe '#scan' do
+    pending 'todo'
+  end
+
   describe '#game_end' do
     pending 'todo'
   end

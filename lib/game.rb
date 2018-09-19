@@ -2,6 +2,7 @@ class Game
   attr_reader :players, :board
   def initialize
     @players = []
+    @winning_player = nil
     @board = [[0,0,0,0,0,0,0],
               [0,0,0,0,0,0,0],
               [0,0,0,0,0,0,0],
@@ -63,6 +64,46 @@ class Game
   end
 
   def four_in_a_row?
+    permutations = []
+    permutations.push(*horizontal_lines)
+    permutations.push(*vertical_lines)
+    permutations.push(*right_incline_lines)
+    permutations.push(*left_incline_lines)
+
+    scan(permutations)
+  end
+
+  def horizontal_lines
+    result = []
+    @board.each do |row|
+      result << row.join("")
+    end
+    return result
+  end
+
+  def vertical_lines
+    result = []
+    counter = 0
+    while counter < board[0].length
+      column = ""
+      @board.each do |row|
+        column += row[counter]
+      end
+      result << column
+      counter += 1
+    end
+
+  end
+
+  def right_incline_lines
+
+  end
+
+  def left_incline_lines
+
+  end
+
+  def scan
 
   end
 
