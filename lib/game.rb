@@ -79,7 +79,7 @@ class Game
       row.map! {|x| x.to_s}
       result << row.join("")
     end
-    return result
+    result
   end
 
   def vertical_lines
@@ -93,7 +93,7 @@ class Game
       result << column
       counter += 1
     end
-
+    result
   end
 
   def right_incline_lines
@@ -106,7 +106,6 @@ class Game
 
   def scan(permutations)
     permutations.each do |string|
-      puts string
       if /1{4}/ =~ string
         @winning_player = 1
         return true
@@ -114,8 +113,8 @@ class Game
         @winning_player = 2
         return true
       end
-      return false
     end
+    return false
   end
 
   def game_end

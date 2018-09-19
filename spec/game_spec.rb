@@ -125,11 +125,17 @@ describe Game do
   end
 
   describe '#horizontal_lines' do
-    pending 'todo'
+    it 'turns horizontal array elements in strings' do
+      game.instance_variable_set(:@board, [[1,1],[2,2]])
+      expect(game.horizontal_lines).to eq(["11", "22"])
+    end
   end
 
   describe '#vertical_lines' do
-    pending 'todo'
+    it 'turns vertical array elements in strings' do
+      game.instance_variable_set(:@board, [[1,1],[2,2]])
+      expect(game.vertical_lines).to eq(["12", "12"])
+    end
   end
 
   describe '#right_incline_lines' do
@@ -141,7 +147,24 @@ describe Game do
   end
 
   describe '#scan' do
-    pending 'todo'
+    context 'when given an array of strings with 4 ones within' do
+      it 'returns true' do
+        expect(game.scan(["00000","00222","00011110"])).to be(true)
+      end
+      it 'sets player 1 as winner' do
+        game.scan(["00000","00222","00011110"])
+        expect(game.winning_player).to eq(1)
+      end
+    end
+    context 'when given an array of strings with 4 twos within' do
+      it 'returns true' do
+        expect(game.scan(["00000","00111","00022220"])).to be(true)
+      end
+      it 'sets player 2 as winner' do
+        game.scan(["00000","00111","00022220"])
+        expect(game.winning_player).to eq(2)
+      end
+    end
   end
 
   describe '#game_end' do
