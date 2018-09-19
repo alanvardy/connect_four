@@ -5,9 +5,6 @@ describe Game do
   end
   let(:game) {game ||= Game.new}
   context 'when initialized' do
-    it 'creates a player list' do
-      expect(game.players).to eq([])
-    end
     it 'creates the board' do
       expect(game.board).to be_truthy
     end
@@ -45,7 +42,7 @@ describe Game do
     it 'creates a player' do
       allow(game).to receive(:get_input).and_return('test')
       game.add_player(1)
-      expect(game.players.length).to eq(1)
+      expect(game.player1).to eq('test')
     end
   end
 
@@ -177,15 +174,5 @@ describe Game do
 
   describe '#change_player' do
     pending 'todo'
-  end
-end
-
-describe Player do
-  context 'when initialized' do
-    it 'creates a player' do
-      player = Player.new("Test", "#")
-      expect(player.name).to eq("Test")
-      expect(player.symbol).to eq("#")
-    end
   end
 end

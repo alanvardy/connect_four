@@ -1,7 +1,8 @@
 class Game
-  attr_reader :players, :board, :winning_player
+  attr_reader :board, :winning_player, :player1, :player2
   def initialize
-    @players = []
+    @player1 = nil
+    @player2 = nil
     @winning_player = nil
     @board = [[0,0,0,0,0,0,0],
               [0,0,0,0,0,0,0],
@@ -24,8 +25,11 @@ class Game
 
   def add_player(num)
     name = get_input("Player #{num}, Enter name: ")
-    symbol = get_input("Player #{num}, Enter symbol: ")
-    @players << Player.new(name, symbol)
+    if num == 1
+      @player1 = name
+    elsif num == 2
+      @player2 = name
+    end
   end
 
   def get_input(prompt, int = false)
@@ -122,18 +126,25 @@ class Game
   end
 
   def select_column
+    loop do
+      column = get_input("Pick a column for your token: ", true) - 1
+      if valid_column?(column)
+        drop_token(column)
+        return
+      end
+      puts "Bad input"
+    end
+  end
+
+  def valid_column?(column)
+
+  end
+
+  def drop_token(column)
 
   end
 
   def change_player
 
-  end
-end
-
-class Player
-  attr_reader :name, :symbol
-  def initialize(name, symbol)
-    @name = name
-    @symbol = symbol
   end
 end
