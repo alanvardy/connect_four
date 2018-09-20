@@ -129,15 +129,12 @@ class Game
       end
       puts "Bad input"
     end
-    puts "FULFILLED"
   end
 
   def valid_column?(column)
-    true
-    # if @board[0][column] == 0
-    #   puts "The selected column is full! It is now the other players turn"
-    #   return false
-    # end
+    return false unless @board[0][column] == 0
+    return false unless column >= 0 && column < @board[0].length
+    return true
   end
 
   def drop_token(column, row = board.length-1)

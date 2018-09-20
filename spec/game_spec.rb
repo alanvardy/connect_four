@@ -168,15 +168,48 @@ describe Game do
   end
 
   describe '#game_end' do
-    pending 'todo'
+    it 'shows the display board' do
+      expect(game).to receive(:display_board)
+      game.game_end
+    end
   end
 
   describe '#select_column' do
-    pending 'todo'
+    context 'when given good input' do
+      it 'calls drop_token with input-1' do
+        allow(game).to receive(:get_input).and_return(3)
+        allow(game).to receive(:valid_column?).and_return(true)
+        expect(game).to receive(:drop_token).with(2)
+        game.select_column
+      end
+    end
+    context 'when given bad input' do
+      it 'repeats itself again' do
+        allow(game).to receive(:get_input).twice.and_return(3)
+        allow(game).to receive(:valid_column?).and_return(false, true)
+        expect(game).to receive(:drop_token).with(2)
+        game.select_column
+      end
+    end
   end
 
   describe '#valid_column?' do
-    pending 'todo'
+    context 'when column is full' do
+      it 'returns false' do
+        game.instance_variable_set(:@board, [[0,0,1,1],[1,1,1,1]])
+        expect(game.valid_column?(2)).to be(false)
+      end
+    end
+    context 'when column doesn\'t exist' do
+      it 'returns false' do
+        expect(game.valid_column?(8)).to be(false)
+      end
+    end
+    context 'when valid' do
+      it 'returns true' do
+        expect(game.valid_column?(2)).to be(true)
+      end
+    end
   end
 
   describe '#drop_token' do
