@@ -12,23 +12,55 @@ describe Game do
   end
 
   describe '#start' do
+    it 'calls change_board' do
+      expect(game).to receive(:change_board)
+      allow(game).to receive(:game_end)
+      allow(game).to receive(:game_loop)
+      allow(game).to receive(:add_players)
+      game.start
+    end
     it 'calls add_players' do
+      allow(game).to receive(:change_board)
       allow(game).to receive(:game_end)
       allow(game).to receive(:game_loop)
       expect(game).to receive(:add_players)
       game.start
     end
     it 'calls game_loop' do
+      allow(game).to receive(:change_board)
       allow(game).to receive(:game_end)
       allow(game).to receive(:add_players)
       expect(game).to receive(:game_loop)
       game.start
     end
     it 'calls game_end' do
+      allow(game).to receive(:change_board)
       expect(game).to receive(:game_end)
       allow(game).to receive(:add_players)
       allow(game).to receive(:game_loop)
       game.start
+    end
+  end
+
+  describe '#change_board' do
+    context 'when reply is y' do
+      it 'gets input and calls create_board' do
+        expect(game).to receive(:get_input).and_return("y", 2, 3)
+        expect(game).to receive(:create_board).with(2, 3)
+        game.change_board
+      end
+    end
+    context 'when any other reply' do
+      it 'gets input and calls create_board' do
+        expect(game).to receive(:get_input).once.and_return("n")
+        game.change_board
+      end
+    end
+  end
+
+  describe '#create_board' do
+    it 'creates a board with width and height' do
+      expect(game.create_board(2, 3)).to eq([[0,0],[0,0],[0,0]])
     end
   end
 

@@ -5,19 +5,28 @@ class Game
     @winning_player = nil
     @current_player = nil
     @player_number = nil
-    @board = [[0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0]]
+    @board = create_board(7, 6)
   end
 
   def start
     puts "Welcome to Connect Four!"
+    change_board
     add_players
     game_loop
     game_end
+  end
+
+  def change_board
+    puts "The default board size is 7 wide by 6 high,"
+    return unless get_input("would you like to change it? y/n: ") == "y"
+    width = get_input("Enter width: ", true)
+    height = get_input("Enter height: ", true)
+    create_board(width, height)
+  end
+
+  def create_board(width, height)
+    row = Array.new(width, 0)
+    @board = Array.new(height, row)
   end
 
   def add_players
@@ -53,8 +62,8 @@ class Game
       row.each {|slot| print " #{slot} "}
       puts "|"
     end
-    puts "-" * 23
-    7.times do |num|
+    puts "-" * (@board[0].length * 3 + 2)
+    @board[0].length.times do |num|
       print "  #{num + 1}"
     end
     puts "\n\n"
