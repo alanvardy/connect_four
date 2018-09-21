@@ -141,15 +141,26 @@ describe Game do
   end
 
   describe '#incline_lines' do
-    pending 'todo'
+    it 'calls sub methods and returns an array  of strings' do
+      game.instance_variable_set(:@board, [[1,2],[3,4]])
+      allow(game).to receive(:left_incline).and_return("1")
+      allow(game).to receive(:right_incline).and_return("2")
+      expect(game.incline_lines).to include("1", "2")
+    end
   end
 
   describe '#right_incline' do
-    pending 'todo'
+    it 'returns a string of diagonal section' do
+      game.instance_variable_set(:@board, [[1,2,3],[4,5,6],[7,8,9]])
+      expect(game.right_incline("7", 0, 2)).to eq("753")
+    end
   end
 
   describe '#left_incline' do
-    pending 'todo'
+    it 'returns a string of diagonal section' do
+      game.instance_variable_set(:@board, [[1,2,3],[4,5,6],[7,8,9]])
+      expect(game.left_incline("9", 2, 2)).to eq("951")
+    end
   end
 
   describe '#scan' do
