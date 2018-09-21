@@ -105,20 +105,22 @@ describe Game do
   end
 
   describe '#four_in_a_row?' do
-    context 'when player 0 has 4 in a row' do
+    context 'when scan is true' do
       it 'returns true' do
-        allow(game).to receive(:horizontal_lines).and_return(["0111100", "0000000"])
+        allow(game).to receive(:horizontal_lines).and_return(1)
+        allow(game).to receive(:vertical_lines).and_return(1)
+        allow(game).to receive(:incline_lines).and_return(1)
+        allow(game).to receive(:scan).and_return(true)
         expect(game.four_in_a_row?).to be(true)
-      end
-      it 'sets winning_player to 0' do
-        allow(game).to receive(:horizontal_lines).and_return(["0111100", "0000000"])
-        game.four_in_a_row?
-        expect(game.winning_player).to eq(0)
       end
     end
 
     context 'when not 4 in a row' do
       it 'returns false' do
+        allow(game).to receive(:horizontal_lines).and_return(1)
+        allow(game).to receive(:vertical_lines).and_return(1)
+        allow(game).to receive(:incline_lines).and_return(1)
+        allow(game).to receive(:scan).and_return(false)
         expect(game.four_in_a_row?).to be(false)
       end
     end
@@ -138,11 +140,15 @@ describe Game do
     end
   end
 
-  describe '#right_incline_lines' do
+  describe '#incline_lines' do
     pending 'todo'
   end
 
-  describe '#left_incline_lines' do
+  describe '#right_incline' do
+    pending 'todo'
+  end
+
+  describe '#left_incline' do
     pending 'todo'
   end
 
@@ -223,9 +229,11 @@ describe Game do
   end
 
   describe '#change_player' do
+    before do
+      game.instance_variable_set(:@players, ["Person1", "Person2"])
+    end
     context 'when current player is 0' do
       it 'sets current player to 1' do
-        game.instance_variable_set(:@players, ["Person1", "Person2"])
         game.instance_variable_set(:@player_number, 1)
         game.change_player
         expect(game.current_player).to eq("Person2")
@@ -233,7 +241,6 @@ describe Game do
     end
     context 'when current player is 1' do
       it 'sets current player to 0' do
-        game.instance_variable_set(:@players, ["Person1", "Person2"])
         game.instance_variable_set(:@player_number, 2)
         game.change_player
         expect(game.current_player).to eq("Person1")

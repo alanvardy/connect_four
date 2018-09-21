@@ -64,9 +64,7 @@ class Game
     permutations = []
     permutations.push(*horizontal_lines)
     permutations.push(*vertical_lines)
-    # permutations.push(*right_incline_lines)
-    # permutations.push(*left_incline_lines)
-
+    permutations.push(*incline_lines)
     scan(permutations)
   end
 
@@ -93,12 +91,39 @@ class Game
     result
   end
 
-  def right_incline_lines
-
+  def incline_lines
+    permutations = []
+    bottom_row = @board.length - 1
+    last_column = @board[0].length-1
+    ycounter = 0
+    @board.each do |row|
+      permutations.push(right_incline(row[0].to_s, 0, ycounter))
+      permutations.push(left_incline(row[last_column].to_s, last_column, ycounter))
+      ycounter += 1
+    end
+    xcounter = 0
+    @board[bottom_row].each do |start|
+      permutations.push(right_incline(start.to_s, xcounter, bottom_row))
+      permutations.push(left_incline(start.to_s, xcounter, bottom_row))
+      xcounter += 1
+    end
+    return permutations
   end
 
-  def left_incline_lines
+  def right_incline(start, x, y)
+    return start unless y > 0 && x < @board[0].length - 1
+    start += @board[y - 1][x + 1].to_s
+    x += 1
+    y -= 1
+    right_incline(start, x, y)
+  end
 
+  def left_incline(start, x, y)
+    return start unless y > 0 && x > 0
+    start += @board[y - 1][x - 1].to_s
+    x -= 1
+    y -= 1
+    left_incline(start, x, y)
   end
 
   def scan(permutations)
@@ -116,7 +141,7 @@ class Game
 
   def game_end
     display_board
-    puts "GAME WON!"
+    puts "GAME WON! #{@current_player} is the winner!"
   end
 
   def select_column
